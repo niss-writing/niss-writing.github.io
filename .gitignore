@@ -1,0 +1,14 @@
+node_modules/
+build/
+dist/
+.private/
+*.private.txt
+*.private.json
+*.zip
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+coverage/
+

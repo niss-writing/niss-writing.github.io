@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f4ef">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'none'; form-action 'self'">
+    <title>Temporary for now</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./app.bundle.js" type="module"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div id="demo-banner" class="demo-banner">
+      <span class="demo-dot" aria-hidden="true"></span>
+      <strong>Sample mode · stays in this browser</strong>
+      <span>Refreshing clears the sample.</span>
+    </div>
+
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Temporary for now home">
+        <svg class="brand-mark" viewBox="0 0 34 34" fill="none" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="9" stroke="currentColor" stroke-width="1.5"/><path d="M10 11h14M17 11v13M11 24h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="25" cy="25" r="2.2" fill="currentColor"/></svg>
+        <span>Temporary for now</span>
+      </a>
+      <button id="open-access-dialog" class="header-link" type="button">
+        Enter access code
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </header>
+
+    <main id="main" class="page-shell">
+      <div id="page-status" class="page-notice" role="status" aria-live="polite" hidden></div>
+      <div class="mode-panel" aria-label="Submission mode">
+        <div><span id="mode-name" class="mode-name">Sample mode</span><p id="mode-description">Try the form without uploading anything. Use an access code for a private submission.</p></div>
+        <div class="mode-actions"><button id="try-sample" class="button button-secondary" type="button">Try a sample</button><button id="connect-access" class="button button-primary" type="button">Enter access code</button><button id="close-session" class="text-button" type="button" hidden>Close private session</button></div>
+      </div>
+
+      <div id="form-view">
+        <div class="intro">
+          <div class="eyebrow"><span aria-hidden="true"></span> YOUR SUBMISSION</div>
+          <h1>Your details.<br><span>Your materials.</span></h1>
+          <p>Tell us a little about yourself and attach your files.<br class="wide-only"> You can come back and update everything later.</p>
+        </div>
+
+        <div class="submission-layout">
+          <aside class="form-sidebar" aria-label="Form progress">
+            <div class="sidebar-inner">
+              <p class="sidebar-label">THREE SIMPLE STEPS</p>
+              <nav aria-label="Submission sections">
+                <ol class="step-list">
+                  <li id="step-details" class="step-item is-current">
+                    <a href="#your-details"><span class="step-number" aria-hidden="true">01</span><span><strong>Your details</strong><small>Name, contact &amp; background</small></span><span class="step-check" aria-label="Complete" hidden>✓</span></a>
+                  </li>
+                  <li id="step-context" class="step-item">
+                    <a href="#a-little-context"><span class="step-number" aria-hidden="true">02</span><span><strong>A little context</strong><small>What you’re sharing &amp; why</small></span><span class="step-check" aria-label="Complete" hidden>✓</span></a>
+                  </li>
+                  <li id="step-files" class="step-item">
+                    <a href="#your-files"><span class="step-number" aria-hidden="true">03</span><span><strong>Your files</strong><small>Two PDFs, ready to go</small></span><span class="step-check" aria-label="Complete" hidden>✓</span></a>
+                  </li>
+                </ol>
+              </nav>
+              <div class="sidebar-note">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 10V7a4 4 0 018 0v3M6 10h12v10H6V10z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 14v2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                <strong id="sidebar-note-title">A place to try things.</strong>
+                <p id="sidebar-note-text">In sample mode, your details and files stay in this page. Try the example, make changes, and download the result.</p>
+              </div>
+              <p id="progress-text" class="progress-text">0 of 3 sections complete</p>
+              <div class="progress-track" aria-hidden="true"><div id="progress-fill"></div></div>
+            </div>
+          </aside>
+
+          <form id="submission-form" class="form-card" novalidate>
+            <div id="editing-banner" class="editing-banner" hidden>
+              <span class="status-dot" aria-hidden="true"></span>
+              <div><strong>Updating your submission</strong><p>Your existing files will stay in place unless you choose replacements.</p></div>
+            </div>
+            <div id="error-summary" class="error-summary" role="alert" tabindex="-1" hidden>
+              <h2 id="error-summary-heading">Please check a few details.</h2>
+              <p id="error-summary-message" hidden></p>
+              <ul id="error-summary-list"></ul>
+            </div>
+            <div id="recovery-panel" class="recovery-panel" hidden>
+              <strong>Check your saved submission.</strong>
+              <p id="recovery-description">Your submission may have arrived before the connection was interrupted. You can retry unchanged materials, or check the saved version. Loading it replaces the details currently in the form.</p>
+              <div class="recovery-actions"><button id="check-submission" class="text-button" type="button">Load latest saved version</button><button id="reconnect-access" class="text-button" type="button">Re-enter access code</button></div>
+              <p id="recovery-status" role="status" aria-live="polite"></p>
+            </div>
+
+            <fieldset id="form-fields" disabled>
+              <legend class="sr-only">Submission details and files</legend>
+              <section id="your-details" class="form-section" aria-labelledby="details-title">
+                <div class="section-heading"><span class="section-index" aria-hidden="true">01</span><div><h2 id="details-title">Your details</h2><p>Let’s start with the basics.</p></div><span class="required-note">* Required</span></div>
+                <div class="field-grid">
+                  <div class="field">
+                    <label for="fullName">Full name <span class="required-star" aria-hidden="true">*</span></label>
+                    <input id="fullName" name="fullName" type="text" autocomplete="name" maxlength="120" placeholder="Your full name" required aria-describedby="fullName-error">
+                    <p id="fullName-error" class="field-error" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="email">Email address <span class="required-star" aria-hidden="true">*</span></label>
+                    <input id="email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required aria-describedby="email-error">
+                    <p id="email-error" class="field-error" hidden></p>
+                  </div>
+                  <div class="field field-wide">
+                    <label for="affiliation">Affiliation <span class="required-star" aria-hidden="true">*</span></label>
+                    <input id="affiliation" name="affiliation" type="text" autocomplete="organization" maxlength="200" placeholder="Organization, institution, or independent" required aria-describedby="affiliation-error">
+                    <p id="affiliation-error" class="field-error" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="careerStage">Career stage <span class="required-star" aria-hidden="true">*</span></label>
+                    <div class="select-wrap"><select id="careerStage" name="careerStage" required aria-describedby="careerStage-error"><option value="">Loading options…</option></select></div>
+                    <p id="careerStage-error" class="field-error" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="field">Field or area <span class="required-star" aria-hidden="true">*</span></label>
+                    <div class="select-wrap"><select id="field" name="field" required aria-describedby="field-error"><option value="">Loading options…</option></select></div>
+                    <p id="field-error" class="field-error" hidden></p>
+                  </div>
+                </div>
+              </section>
+
+              <section id="a-little-context" class="form-section" aria-labelledby="context-title">
+                <div class="section-heading"><span class="section-index" aria-hidden="true">02</span><div><h2 id="context-title">A little context</h2><p>Help us understand the materials you’re sharing.</p></div></div>
+                <div class="field-grid">
+                  <div class="field field-wide">
+                    <label for="sampleTitle">Sample title <span class="required-star" aria-hidden="true">*</span></label>
+                    <input id="sampleTitle" name="sampleTitle" type="text" maxlength="160" placeholder="A title for your sample" required aria-describedby="sampleTitle-error">
+                    <p id="sampleTitle-error" class="field-error" hidden></p>
+                  </div>
+                  <div class="field field-wide">
+                    <div class="label-row"><label for="summary">Brief description <span class="required-star" aria-hidden="true">*</span></label><span class="character-count" id="summary-count">0 / 3,000</span></div>
+                    <textarea id="summary" name="summary" rows="4" maxlength="3000" placeholder="What is your sample about? A few sentences are enough." required aria-describedby="summary-help summary-error"></textarea>
+                    <p id="summary-help" class="field-help">A short overview is all you need.</p>
+                    <p id="summary-error" class="field-error" hidden></p>
+                  </div>
+                  <div class="field field-wide">
+                    <div class="label-row"><label for="goals">What would you like to get out of this? <span class="required-star" aria-hidden="true">*</span></label><span class="character-count" id="goals-count">0 / 2,000</span></div>
+                    <textarea id="goals" name="goals" rows="3" maxlength="2000" placeholder="Share your goals or the kind of feedback you’re looking for." required aria-describedby="goals-error"></textarea>
+                    <p id="goals-error" class="field-error" hidden></p>
+                  </div>
+                  <div class="field field-wide">
+                    <label for="notes">Anything else? <span class="optional-label">Optional</span></label>
+                    <textarea id="notes" name="notes" rows="3" maxlength="3000" placeholder="Anything else you’d like us to know." aria-describedby="notes-error"></textarea>
+                    <p id="notes-error" class="field-error" hidden></p>
+                  </div>
+                </div>
+              </section>
+
+              <section id="your-files" class="form-section" aria-labelledby="files-title">
+                <div class="section-heading"><span class="section-index" aria-hidden="true">03</span><div><h2 id="files-title">Your files</h2><p id="files-description">Attach one PDF for each item below.</p></div></div>
+                <div class="upload-grid">
+                  <div id="cv-card" class="upload-card">
+                    <div class="upload-heading"><h3>CV <span class="required-star" aria-hidden="true">*</span></h3><span class="file-type">PDF</span></div>
+                    <div class="upload-illustration" aria-hidden="true"><svg viewBox="0 0 48 56" fill="none"><path d="M9 2h21l12 12v35a5 5 0 01-5 5H9a5 5 0 01-5-5V7a5 5 0 015-5z" stroke="currentColor" stroke-width="1.5"/><path d="M30 2v12h12M14 35h18M14 41h13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="19" cy="23" r="4" stroke="currentColor" stroke-width="1.5"/></svg></div>
+                    <p id="cv-name" class="upload-name">Your CV goes here</p>
+                    <p id="cv-meta" class="upload-meta">Choose a PDF from your device</p>
+                    <input id="cv" name="cv" class="file-input" type="file" accept=".pdf,application/pdf" required aria-label="Choose your CV PDF" aria-describedby="cv-name cv-meta cv-help cv-error">
+                    <label for="cv" id="cv-button" class="file-button"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 13V3M6 7l4-4 4 4M4 12v4a1 1 0 001 1h10a1 1 0 001-1v-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="cv-button-label">Choose PDF</span></label>
+                    <button id="cv-remove" class="remove-file" type="button" hidden>Remove selected file</button>
+                    <p id="cv-help" class="upload-limit">PDF only</p>
+                    <p id="cv-error" class="field-error" hidden></p>
+                  </div>
+                  <div id="sample-card" class="upload-card">
+                    <div class="upload-heading"><h3>Sample <span class="required-star" aria-hidden="true">*</span></h3><span class="file-type">PDF</span></div>
+                    <div class="upload-illustration" aria-hidden="true"><svg viewBox="0 0 48 56" fill="none"><path d="M9 2h21l12 12v35a5 5 0 01-5 5H9a5 5 0 01-5-5V7a5 5 0 015-5z" stroke="currentColor" stroke-width="1.5"/><path d="M30 2v12h12M14 23h18M14 29h18M14 35h18M14 41h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                    <p id="sample-name" class="upload-name">Your sample goes here</p>
+                    <p id="sample-meta" class="upload-meta">Choose a PDF from your device</p>
+                    <input id="sample" name="sample" class="file-input" type="file" accept=".pdf,application/pdf" required aria-label="Choose your sample PDF" aria-describedby="sample-name sample-meta sample-help sample-error">
+                    <label for="sample" id="sample-button" class="file-button"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 13V3M6 7l4-4 4 4M4 12v4a1 1 0 001 1h10a1 1 0 001-1v-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="sample-button-label">Choose PDF</span></label>
+                    <button id="sample-remove" class="remove-file" type="button" hidden>Remove selected file</button>
+                    <p id="sample-help" class="upload-limit">PDF only</p>
+                    <p id="sample-error" class="field-error" hidden></p>
+                  </div>
+                </div>
+                <p class="file-explainer"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.3"/><path d="M10 9v4M10 6.5v.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> You can replace either file when you return to make changes.</p>
+              </section>
+
+              <div class="submit-section">
+                <div class="consent-field">
+                  <label class="checkbox-label" for="consent"><input id="consent" name="consent" type="checkbox" required aria-describedby="consent-error"><span>I confirm that these are the materials I intend to share and that I have permission to submit them. <span class="required-star" aria-hidden="true">*</span></span></label>
+                  <p id="consent-error" class="field-error" hidden></p>
+                </div>
+                <div class="submit-row">
+                  <p id="submit-helper">This sample stays in your browser.</p>
+                  <button id="submit-button" class="button button-primary" type="submit"><span id="submit-label">Save sample</span><span id="submit-spinner" class="spinner" hidden aria-hidden="true"></span><svg id="submit-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                </div>
+                <p id="submit-status" class="submit-status" role="status" aria-live="polite"></p>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+
+      <section id="receipt-view" class="receipt-view" aria-labelledby="receipt-title" hidden>
+        <div class="receipt-intro">
+          <div class="success-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M8 16l6 6L25 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div id="receipt-eyebrow" class="eyebrow">ALL SET</div>
+          <h1 id="receipt-title" tabindex="-1">Your materials are in.</h1>
+          <p id="receipt-message">Your details and both PDFs have been received.</p>
+        </div>
+        <div class="receipt-card">
+          <div class="receipt-heading"><h2>Your submission</h2><span id="receipt-status" class="status-pill"><span class="status-dot" aria-hidden="true"></span><span id="receipt-status-text">Submitted</span></span></div>
+          <dl class="receipt-summary">
+            <div><dt>Name</dt><dd id="receipt-name"></dd></div>
+            <div><dt>Email</dt><dd id="receipt-email"></dd></div>
+            <div><dt>Reference</dt><dd id="receipt-reference" class="reference"></dd></div>
+            <div><dt>Last saved</dt><dd id="receipt-date"></dd></div>
+          </dl>
+          <div class="receipt-files">
+            <div class="receipt-file"><span class="receipt-file-icon" aria-hidden="true">PDF</span><div><strong>CV</strong><span id="receipt-cv-name"></span><small id="receipt-cv-meta"></small></div><button id="download-cv" class="icon-button" type="button" aria-label="Download CV"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3v10M6 9l4 4 4-4M4 14v3h12v-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+            <div class="receipt-file"><span class="receipt-file-icon" aria-hidden="true">PDF</span><div><strong>Sample</strong><span id="receipt-sample-name"></span><small id="receipt-sample-meta"></small></div><button id="download-sample" class="icon-button" type="button" aria-label="Download sample"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3v10M6 9l4 4 4-4M4 14v3h12v-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+          </div>
+          <details class="receipt-details"><summary>Review your details</summary><dl id="receipt-details-list"></dl><button id="download-metadata" class="text-button" type="button">Download details as a text document</button></details>
+          <div class="return-link-panel">
+            <div class="return-link-heading"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 10V7a4 4 0 018 0v3M6 10h12v10H6V10z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 14v2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><h3 id="receipt-access-title">A sample you can explore</h3></div>
+            <p id="receipt-access-description">Nothing has been uploaded. You can edit this sample and download its files. Refreshing the page clears it.</p>
+            <button id="receipt-check-status" class="text-button" type="button" hidden>Check saved status</button>
+            <p id="receipt-check-message" class="link-status" role="status" aria-live="polite"></p>
+          </div>
+          <div class="receipt-actions"><button id="edit-submission" class="button button-primary" type="button">Edit submission<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button id="download-package" class="button button-secondary" type="button">Download your files</button></div>
+          <p id="download-status" class="download-status" role="status" aria-live="polite"></p>
+        </div>
+        <div class="receipt-bottom"><button id="receipt-try-sample" class="text-button" type="button">Try another sample</button><span id="receipt-bottom-dot" aria-hidden="true" hidden>·</span><button id="receipt-close-session" class="text-button" type="button" hidden>Close private session</button></div>
+      </section>
+
+      <noscript><div class="connection-error"><h2>JavaScript is needed for this form.</h2><p>Please enable JavaScript in your browser to attach files, submit materials, and return to make updates.</p></div></noscript>
+    </main>
+
+    <footer class="site-footer"><span>Temporary for now</span><span>A simple place to submit and return.</span></footer>
+
+    <dialog id="access-dialog" class="return-dialog" aria-labelledby="access-dialog-title" aria-describedby="access-dialog-description">
+      <form id="access-dialog-form" novalidate autocomplete="off">
+        <div class="dialog-heading"><h2 id="access-dialog-title">Your private space.</h2><button id="close-access-dialog" class="icon-button" type="button" aria-label="Close access code dialog"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button></div>
+        <p id="access-dialog-description">Paste the private access code you were given. It opens your submission and lets you return to make changes.</p>
+        <label for="access-code-input">Access code</label>
+        <textarea id="access-code-input" rows="4" maxlength="4096" autocomplete="off" spellcheck="false" autocapitalize="none" placeholder="Paste your private access code here" required aria-describedby="access-code-help access-dialog-error"></textarea>
+        <p id="access-code-help" class="field-help">Keep your original code private. It is not saved in this browser; you will need it again after closing or refreshing the page.</p>
+        <p id="access-dialog-error" class="field-error" role="alert" hidden></p>
+        <button id="open-private-submission" class="button button-primary" type="submit">Open my submission<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </form>
+    </dialog>
+  </body>
+</html>

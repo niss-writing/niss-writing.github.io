@@ -1,0 +1,69 @@
+name: Validate and save submission
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Private submission pull request number to retry
+        required: true
+        type: number
+
+permissions:
+  contents: read
+
+concurrency:
+  group: private-submission-${{ github.repository_id }}
+  cancel-in-progress: false
+
+jobs:
+  validate-and-save:
+    if: >-
+      github.repository == '__OWNER__/__REPOSITORY_NAME__' &&
+      github.event.repository.private == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+    defaults:
+      run:
+        working-directory: trusted
+    steps:
+      # The participant credential has NO Workflows permission. All executable
+      # code and dependencies come from this separate public repository at an
+      # immutable administrator-selected commit, never from the private repo.
+      - name: Check out the trusted public validator
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: '__SOURCE_REPOSITORY__'
+          ref: '__SOURCE_SHA__'
+          path: trusted
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '24'
+
+      - name: Install only trusted locked dependencies
+        run: npm ci --omit=dev --ignore-scripts --no-audit --no-fund
+
+      - name: Validate the exact private submission and merge when permitted
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+          REQUEST_HEAD_SHA: ${{ github.event.pull_request.head.sha || '' }}
+          EXPECTED_SUBMISSION_ID: '__SUBMISSION_ID__'
+          EXPECTED_REPOSITORY_ID: '__REPOSITORY_ID__'
+          EXPECTED_OWNER: '__OWNER__'
+          EXPECTED_REPOSITORY_NAME: '__REPOSITORY_NAME__'
+          EXPECTED_BRANCH: submission
+          MAX_FILE_BYTES: '2097152'
+          AUTO_MERGE: 'true'
+          TRUSTED_SOURCE_REPOSITORY: '__SOURCE_REPOSITORY__'
+          TRUSTED_SOURCE_SHA: '__SOURCE_SHA__'
+        run: node scripts/validate-and-merge.mjs
